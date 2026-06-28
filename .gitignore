@@ -1,0 +1,36 @@
+# STM32CubeIDE / STM32CubeMX
+*.elf
+*.hex
+*.bin
+*.map
+*.list
+*.o
+*.d
+*.su
+
+# Build output
+build/
+cmake-build-*/
+Debug/
+Release/
+[Bb]uild/
+[Oo]utput/
+
+# IDE files
+.idea/
+.settings/
+*.launch
+.metadata/
+
+# OS files
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Dependencies
+Drivers/CMSIS/
+
+# Claude Code
+.claude/
