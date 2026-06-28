@@ -83,7 +83,7 @@ uint16_t main_cnt = 0; //主循环计数
 
 // adc_buf[1]~[5] 对应5路循迹，adc_buf[0] 对应电池电压
 uint16_t adc_buf[6];
-static int xj_pwm = 30;
+static int xj_pwm = 3000;
 
 // 定义环形缓冲区结构
 #define UART_BUFFER_SIZE 64
@@ -203,12 +203,14 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
     //pwm生成启动
-    HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-    HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);
-    HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_3);
+
     HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_4);
 
 
+    HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_4);
+
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_4);
 
@@ -267,7 +269,8 @@ int main(void)
         // 赛题选择
         Mode_choose();
         //循迹pwm
-        __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, xj_pwm);
+        __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, xj_pwm);
+        OLED_ShowString(3,1,"pwm:");//测试。；
 
         //根据赛题执行不同操作
         switch (Key_cnt)
@@ -281,6 +284,7 @@ int main(void)
                 Buzzer_Stop_Song();
                 Task_OLED_Enable(true) ;
                 Task_Car_Pidcontrol_Enable(false);
+                Car_stop();    // 禁用小车控制时清零残留速度
 
                 break;
             case 2:
